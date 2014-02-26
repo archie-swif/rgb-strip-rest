@@ -5,4 +5,11 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>rgb-strip-rest</name>
   <description>REST service to control a led strip on Raspberry Pi</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.glassfish.jersey.containers</groupId>
+  		<artifactId>jersey-container-grizzly2-http</artifactId>
+  		<version>2.5.1</version>
+  	</dependency>
+  </dependencies>
 </project>
