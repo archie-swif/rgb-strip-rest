@@ -1,4 +1,6 @@
-package com.ryabokon.pie;
+package com.ryabokon.pie.api;
+
+import java.awt.Color;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -7,20 +9,24 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import com.ryabokon.pie.model.LedStrip;
+
 @Path("/")
-public class HelloWorldRest {
+public class LedStripService {
+
+	private LedStrip strip = new LedStrip();
 
 	@GET
 	@Path("/{id}")
-	public Response getLedDetails(@PathParam("id") String parameter) {
-		String output = "Led " + parameter + " : " + "OK!";
+	public Response getLedDetails(@PathParam("id") Integer id) {
+		String output = "Led " + id + " : " + strip.getPixel(id);
 		return Response.status(200).entity(output).build();
 	}
 
 	@GET
 	@Path("/")
 	public Response getLedsList() {
-		String output = "Leds: 1, 2, 3";
+		String output = strip.toString();
 		return Response.status(200).entity(output).build();
 	}
 }
