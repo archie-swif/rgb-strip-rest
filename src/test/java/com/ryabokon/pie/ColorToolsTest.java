@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+package com.ryabokon.pie;
 
 import java.awt.Color;
 

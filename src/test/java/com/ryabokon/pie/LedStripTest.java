@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+package com.ryabokon.pie;
 
 import java.awt.Color;
 
@@ -54,8 +54,7 @@ public class LedStripTest {
 			if (i == 5) {
 				Assert.assertEquals("Pixel 5 should be red", Color.RED, color);
 			} else {
-				Assert.assertEquals("Other pixels should be left intact",
-						Color.BLACK, color);
+				Assert.assertEquals("Other pixels should be left intact", Color.BLACK, color);
 			}
 		}
 
@@ -68,8 +67,7 @@ public class LedStripTest {
 
 		for (int i = 0; i < strip.getSize(); i++) {
 			Color color = strip.getPixel(i);
-			Assert.assertEquals("Pixels should be filled with CYAN",
-					Color.CYAN, color);
+			Assert.assertEquals("Pixels should be filled with CYAN", Color.CYAN, color);
 		}
 
 	}
@@ -83,8 +81,7 @@ public class LedStripTest {
 		strip.setPixel(3, Color.BLUE);
 		strip.setPixel(4, Color.WHITE);
 
-		byte[] expectedBytes = { 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, -1, -1,
-				-1 };
+		byte[] expectedBytes = { 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, -1, -1, -1 };
 		byte[] actualBytes = strip.toArray();
 
 		Assert.assertArrayEquals(expectedBytes, actualBytes);

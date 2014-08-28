@@ -1,7 +1,7 @@
 package com.ryabokon.pie.model;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.HashMap;
 
 public class LedStrip {
 
@@ -18,8 +18,7 @@ public class LedStrip {
 		fillPixels(Color.BLACK);
 	}
 
-	public void setPixel(int position, Color color)
-			throws IndexOutOfBoundsException {
+	public void setPixel(int position, Color color) throws IndexOutOfBoundsException {
 		if (doesPixelFitStrip(position)) {
 			pixels.put(position, color);
 		}
@@ -44,21 +43,18 @@ public class LedStrip {
 
 		HashMap<Integer, String> hexes = new HashMap<Integer, String>();
 		for (int i = 0; i < size; i++) {
-			String hex = "#"
-					+ Integer.toHexString(pixels.get(i).getRGB()).substring(2).toUpperCase();
+			String hex = "#" + Integer.toHexString(pixels.get(i).getRGB()).substring(2).toUpperCase();
 			hexes.put(i, hex);
 		}
 
 		return hexes.toString();
-
 	}
 
 	public byte[] toArray() {
 		byte[] data = new byte[size * 3];
 		for (Integer i : pixels.keySet()) {
 			Color pixel = pixels.get(i);
-			byte[] src = new byte[] { (byte) pixel.getRed(),
-					(byte) pixel.getGreen(), (byte) pixel.getBlue() };
+			byte[] src = new byte[] { (byte) pixel.getRed(), (byte) pixel.getGreen(), (byte) pixel.getBlue() };
 			System.arraycopy(src, 0, data, i * 3, 3);
 		}
 		return data;
