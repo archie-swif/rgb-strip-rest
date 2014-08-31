@@ -30,7 +30,7 @@ public class LedStripResource {
 		Color color = Color.decode(hex);
 		ledService.fillPixels(color);
 
-		hardwareService.sendData(ledService.getStripAsByteArray());
+		hardwareService.sendData(ledService.getStripAsByteArray(true));
 
 		String output = ledService.getStripAsString();
 		return Response.status(200).entity(output).build();
@@ -50,7 +50,7 @@ public class LedStripResource {
 		hex = "#" + hex;
 		Color color = Color.decode(hex);
 		ledService.setPixel(id, color);
-		hardwareService.sendData(ledService.getStripAsByteArray());
+		hardwareService.sendData(ledService.getStripAsByteArray(true));
 
 		String output = ledService.getStripAsString();
 		return Response.status(200).entity(output).build();

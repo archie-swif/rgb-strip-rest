@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.*;
 
 import com.ryabokon.pie.model.*;
+import com.ryabokon.pie.tools.*;
 
 public class LedStripService {
 
@@ -43,11 +44,25 @@ public class LedStripService {
 		return ledStrip;
 	}
 
-	public byte[] getStripAsByteArray() {
+	public byte[] getStripAsByteArray(boolean gammaCorrection) {
 		byte[] data = new byte[ledStrip.getSize() * 3];
+
 		for (int i = 0; i < ledStrip.getSize(); i++) {
+
 			Color pixel = ledStrip.getPixel(i);
-			byte[] src = new byte[] { (byte) pixel.getRed(), (byte) pixel.getGreen(), (byte) pixel.getBlue() };
+
+			int r = pixel.getRed();
+			int g = pixel.getGreen();
+			int b = pixel.getBlue();
+
+			if (gammaCorrection) {
+				r = ColorTools.getGammaCorrectedColor(r);
+				g = ColorTools.getGammaCorrectedColor(g);
+				b = ColorTools.getGammaCorrectedColor(b);
+			}
+
+			byte[] src = new byte[] { (byte) r, (byte) g, (byte) b };
+
 			System.arraycopy(src, 0, data, i * 3, 3);
 		}
 		return data;

@@ -81,7 +81,18 @@ public class LedStripServiceTest {
 		ledService.setPixel(4, Color.WHITE);
 
 		byte[] expectedBytes = { 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, -1, -1, -1 };
-		byte[] actualBytes = ledService.getStripAsByteArray();
+		byte[] actualBytes = ledService.getStripAsByteArray(false);
+
+		Assert.assertArrayEquals(expectedBytes, actualBytes);
+	}
+
+	@Test
+	public void pixelsToArrayWithGammaCorrectionTest() {
+		LedStripService ledService = new LedStripService(1);
+		ledService.setPixel(0, new Color(32, 64, 128));
+
+		byte[] expectedBytes = { 1, 5, 37 };
+		byte[] actualBytes = ledService.getStripAsByteArray(true);
 
 		Assert.assertArrayEquals(expectedBytes, actualBytes);
 	}
