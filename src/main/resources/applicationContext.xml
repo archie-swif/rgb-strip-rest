@@ -6,5 +6,5 @@
   http://www.springframework.org/schema/context
   http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean class="com.ryabokon.pie.api.LedStripService" />
+	<bean class="com.ryabokon.pie.api.LedStripResource" />
 </beans>

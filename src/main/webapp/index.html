@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/colpick.js" type="text/javascript"></script>
+<link rel="stylesheet" href="css/colpick.css" type="text/css" />
+
+<script>
+	$(document).ready(function() {
+		$('#picker').colpick({
+			flat : true,
+			layout : 'hex',
+			submit : 0,
+			onChange : function(hsb, hex, rgb, el, bySetColor) {
+				// Fill the text box just if the color was set using the picker, and not the colpickSetColor function.
+				if (!bySetColor) {
+					$.ajax({
+					    url: 'api/leds/'+hex,
+					    type: 'PUT',
+					    success: function(result) {
+					        // Do nothing!
+					    }
+					});
+				}
+			}
+		}).keyup(function() {
+			$(this).colpickSetColor(this.value);
+		});
+	});
+</script>
+
+</head>
+<body>
+	<div id="picker"></div>
+</body>
+</html>

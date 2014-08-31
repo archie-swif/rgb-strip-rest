@@ -1,11 +1,7 @@
 package com.ryabokon.pie.tools;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
-import com.ryabokon.pie.model.LedStrip;
+import java.awt.*;
+import java.util.*;
 
 public class ColorTools {
 
@@ -79,22 +75,6 @@ public class ColorTools {
 		final float brightness = b / 360.0f;
 
 		return Color.getHSBColor(hue, saturation, brightness);
-	}
-
-	public static LedStrip getShuffledFullRainbowStrip() {
-		LedStrip strip = new LedStrip();
-		ArrayList<Color> colors = new ArrayList<Color>();
-
-		for (int i = 0; i < 25; i++) {
-			colors.add(Color.getHSBColor((i * 15) / 360f, 1, 1));
-		}
-		Collections.shuffle(colors);
-
-		for (int i = 0; i < 25; i++) {
-			strip.setPixel(i, colors.get(i));
-		}
-		return strip;
-
 	}
 
 }
