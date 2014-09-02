@@ -1,59 +1,54 @@
 package com.ryabokon.pie;
 
-import java.awt.*;
-
 import org.junit.*;
 
 import com.ryabokon.pie.api.services.*;
 
 public class LedStripServiceTest {
 
-	@Test
-	public void createStripTest() {
-		LedStripService ledService = new LedStripService();
-		Assert.assertTrue("Default size is 25, actual: [" + ledService.getStripSize() + "]",
-				ledService.getStripSize() == 25);
-
-		for (int i = 0; i < ledService.getStripSize(); i++) {
-			Color color = ledService.getPixel(i);
-			Assert.assertEquals("Default color is black", Color.BLACK, color);
-		}
-
-	}
+	private final String BLACK = "000000";
+	private final String RED = "FF0000";
+	private final String GREEN = "00FF00";
+	private final String BLUE = "0000FF";
+	private final String WHITE = "FFFFFF";
+	private final String BEBEBE = "BEBEBE";
 
 	@Test
 	public void stripIsBlackByDefaultTest() {
-		LedStripService ledService = new LedStripService();
+		LedStripService ledService = new LedStripService(25);
 
-		for (int i = 0; i < ledService.getStripSize(); i++) {
-			Color color = ledService.getPixel(i);
-			Assert.assertEquals("Default color is black", Color.BLACK, color);
+		for (int i = 0; i < ledService.getLedsSize(); i++) {
+			String color = ledService.getLedColor(i);
+			Assert.assertEquals("Default color is black", BLACK, color);
 		}
 
 	}
 
 	@Test
-	public void customSizedStripIsBlackByDefaultTest() {
+	public void bigSizedStripIsBlackByDefaultTest() {
 		LedStripService ledService = new LedStripService(100);
 
-		for (int i = 0; i < ledService.getStripSize(); i++) {
-			Color color = ledService.getPixel(i);
-			Assert.assertEquals("Default color is black", Color.BLACK, color);
+		for (int i = 0; i < ledService.getLedsSize(); i++) {
+			String color = ledService.getLedColor(i);
+			Assert.assertEquals("Default color is black", BLACK, color);
 		}
 
 	}
 
 	@Test
 	public void setPixelColorTest() {
-		LedStripService ledService = new LedStripService();
-		ledService.setPixel(5, Color.RED);
 
-		for (int i = 0; i < ledService.getStripSize(); i++) {
-			Color color = ledService.getPixel(i);
+		LedStripService ledService = new LedStripService(20);
+		ledService.setLedColor(5, RED);
+
+		for (int i = 0; i < ledService.getLedsSize(); i++) {
+
+			String actual = ledService.getLedColor(i);
+
 			if (i == 5) {
-				Assert.assertEquals("Pixel 5 should be red", Color.RED, color);
+				Assert.assertEquals("Pixel 5 should be red", RED, actual);
 			} else {
-				Assert.assertEquals("Other pixels should be left intact", Color.BLACK, color);
+				Assert.assertEquals("Other pixels should be left intact", BLACK, actual);
 			}
 		}
 
@@ -61,12 +56,13 @@ public class LedStripServiceTest {
 
 	@Test
 	public void fillPixelsTest() {
-		LedStripService ledService = new LedStripService();
-		ledService.fillPixels(Color.CYAN);
+		LedStripService ledService = new LedStripService(42);
+		String fillColor = "BEBEBE";
+		ledService.fillLeds(fillColor);
 
-		for (int i = 0; i < ledService.getStripSize(); i++) {
-			Color color = ledService.getPixel(i);
-			Assert.assertEquals("Pixels should be filled with CYAN", Color.CYAN, color);
+		for (int i = 0; i < ledService.getLedsSize(); i++) {
+			String actual = ledService.getLedColor(i);
+			Assert.assertEquals("Pixels should be filled with BEBEBE", fillColor, actual);
 		}
 
 	}
@@ -74,14 +70,14 @@ public class LedStripServiceTest {
 	@Test
 	public void pixelsToArrayTest() {
 		LedStripService ledService = new LedStripService(5);
-		ledService.setPixel(0, Color.BLACK);
-		ledService.setPixel(1, Color.RED);
-		ledService.setPixel(2, Color.GREEN);
-		ledService.setPixel(3, Color.BLUE);
-		ledService.setPixel(4, Color.WHITE);
+		ledService.setLedColor(0, "000000");
+		ledService.setLedColor(1, "FF0000");
+		ledService.setLedColor(2, "00FF00");
+		ledService.setLedColor(3, "0000FF");
+		ledService.setLedColor(4, "FFFFFF");
 
 		byte[] expectedBytes = { 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, -1, -1, -1 };
-		byte[] actualBytes = ledService.getStripAsByteArray(false);
+		byte[] actualBytes = ledService.getLedsAsByteArray();
 
 		Assert.assertArrayEquals(expectedBytes, actualBytes);
 	}
@@ -89,10 +85,10 @@ public class LedStripServiceTest {
 	@Test
 	public void pixelsToArrayWithGammaCorrectionTest() {
 		LedStripService ledService = new LedStripService(1);
-		ledService.setPixel(0, new Color(32, 64, 128));
+		ledService.setLedColor(0, "204080");
 
 		byte[] expectedBytes = { 1, 5, 37 };
-		byte[] actualBytes = ledService.getStripAsByteArray(true);
+		byte[] actualBytes = ledService.getLedsAsByteArray();
 
 		Assert.assertArrayEquals(expectedBytes, actualBytes);
 	}
@@ -100,14 +96,14 @@ public class LedStripServiceTest {
 	@Test
 	public void pixelsToStringTest() {
 		LedStripService ledService = new LedStripService(5);
-		ledService.setPixel(0, Color.BLACK);
-		ledService.setPixel(1, Color.RED);
-		ledService.setPixel(2, Color.GREEN);
-		ledService.setPixel(3, Color.BLUE);
-		ledService.setPixel(4, Color.WHITE);
+		ledService.setLedColor(0, "000000");
+		ledService.setLedColor(1, "FF0000");
+		ledService.setLedColor(2, "00FF00");
+		ledService.setLedColor(3, "0000FF");
+		ledService.setLedColor(4, "FFFFFF");
 
-		String expectedString = "{0=#000000, 1=#FF0000, 2=#00FF00, 3=#0000FF, 4=#FFFFFF}";
-		String actualString = ledService.getStripAsString();
+		String expectedString = "{\"leds\":{\"0\":\"000000\",\"1\":\"FF0000\",\"2\":\"00FF00\",\"3\":\"0000FF\",\"4\":\"FFFFFF\"}}";
+		String actualString = ledService.getLedsAsString();
 
 		Assert.assertEquals(expectedString, actualString);
 	}

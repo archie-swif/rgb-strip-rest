@@ -1,65 +1,63 @@
 package com.ryabokon.pie.api.services;
 
 import java.awt.*;
-import java.util.*;
 
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.*;
 import com.ryabokon.pie.model.*;
 import com.ryabokon.pie.tools.*;
 
 public class LedStripService {
 
-	private final LedStrip ledStrip;
-
-	public LedStripService() {
-		ledStrip = new LedStrip();
-		fillPixels(Color.BLACK);
-	}
+	private final ObjectMapper mapper = new ObjectMapper();
+	private final LedStrip leds;
 
 	public LedStripService(int stripSize) {
-		ledStrip = new LedStrip(stripSize);
-		fillPixels(Color.BLACK);
+		leds = new LedStrip(stripSize);
+		fillLeds("000000");
 	}
 
-	public Color getPixel(int position) {
-		return ledStrip.getPixel(position);
+	public String getLedColor(int position) {
+		return leds.getLedColor(position);
 	}
 
-	public void setPixel(int position, Color color) {
-		if (position >= 0 && position < ledStrip.getSize()) {
-			ledStrip.setPixel(position, color);
+	public void setLedColor(int position, String color) {
+		if (position >= 0 && position < leds.getSize()) {
+			leds.setLedColor(position, color);
 		}
 	}
 
-	public void fillPixels(Color color) {
-		for (int i = 0; i < ledStrip.getSize(); i++) {
-			ledStrip.setPixel(i, color);
+	public void fillLeds(String color) {
+		for (int i = 0; i < leds.getSize(); i++) {
+			leds.setLedColor(i, color);
 		}
 	}
 
-	public int getStripSize() {
-		return ledStrip.getSize();
+	public int getLedsSize() {
+		return leds.getSize();
 	}
 
-	public LedStrip getStrip() {
-		return ledStrip;
+	public LedStrip getLeds() {
+		return leds;
 	}
 
-	public byte[] getStripAsByteArray(boolean gammaCorrection) {
-		byte[] data = new byte[ledStrip.getSize() * 3];
+	public byte[] getLedsAsByteArray() {
+		byte[] data = new byte[leds.getSize() * 3];
 
-		for (int i = 0; i < ledStrip.getSize(); i++) {
+		for (int i = 0; i < leds.getSize(); i++) {
 
-			Color pixel = ledStrip.getPixel(i);
+			String pixel = leds.getLedColor(i);
 
-			int r = pixel.getRed();
-			int g = pixel.getGreen();
-			int b = pixel.getBlue();
+			// TODO catch if smth wrong comes in
+			Color color = Color.decode("#" + pixel);
 
-			if (gammaCorrection) {
-				r = ColorTools.getGammaCorrectedColor(r);
-				g = ColorTools.getGammaCorrectedColor(g);
-				b = ColorTools.getGammaCorrectedColor(b);
-			}
+			int r = color.getRed();
+			int g = color.getGreen();
+			int b = color.getBlue();
+
+			r = ColorTools.getGammaCorrectedColor(r);
+			g = ColorTools.getGammaCorrectedColor(g);
+			b = ColorTools.getGammaCorrectedColor(b);
 
 			byte[] src = new byte[] { (byte) r, (byte) g, (byte) b };
 
@@ -68,14 +66,16 @@ public class LedStripService {
 		return data;
 	}
 
-	public String getStripAsString() {
-		TreeMap<Integer, String> hexes = new TreeMap<Integer, String>();
-		for (int i = 0; i < ledStrip.getSize(); i++) {
-			String hex = "#" + Integer.toHexString(ledStrip.getPixel(i).getRGB()).substring(2).toUpperCase();
-			hexes.put(i, hex);
+	public String getLedsAsString() {
+		String json = null;
+
+		try {
+			json = mapper.writeValueAsString(leds);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
 		}
 
-		return hexes.toString();
+		return json;
 	}
 
 }

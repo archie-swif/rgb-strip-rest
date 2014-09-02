@@ -17,7 +17,6 @@ public class ColorToolsTest {
 
 	@Test
 	public void testGammaCorrctionFunction() {
-
 		int a0 = ColorTools.getGammaCorrectedColor(0);
 		int e0 = 0;
 		Assert.assertEquals(a0, e0);

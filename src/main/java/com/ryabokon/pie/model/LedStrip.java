@@ -1,28 +1,31 @@
 package com.ryabokon.pie.model;
 
-import java.awt.*;
+import java.util.*;
+
+import com.fasterxml.jackson.annotation.*;
 
 public class LedStrip {
 
-	private final Color[] pixels;
+	@JsonIgnore
 	private final int size;
-
-	public LedStrip() {
-		this.pixels = new Color[25];
-		this.size = 25;
-	}
+	private final HashMap<Integer, String> leds;
 
 	public LedStrip(int size) {
-		this.pixels = new Color[size];
 		this.size = size;
+		this.leds = new HashMap<Integer, String>(size);
+
 	}
 
-	public void setPixel(int position, Color color) {
-		pixels[position] = color;
+	public void setLedColor(int position, String color) {
+		leds.put(position, color);
 	}
 
-	public Color getPixel(int position) {
-		return pixels[position];
+	public String getLedColor(int position) {
+		return leds.get(position);
+	}
+
+	public HashMap<Integer, String> getLeds() {
+		return leds;
 	}
 
 	public int getSize() {

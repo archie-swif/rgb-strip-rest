@@ -6,6 +6,7 @@ public class ColorTools {
 	private static final float MAX_OUT = 255f;
 	private static final float GAMMA = 2.8f;
 
+	// Ten times faster!
 	private static int[] correctionTable;
 
 	static {

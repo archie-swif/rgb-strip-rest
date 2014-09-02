@@ -1,11 +1,9 @@
 package com.ryabokon.pie.api;
 
-import java.awt.*;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.*;
 
 import com.ryabokon.pie.api.services.*;
 
@@ -13,33 +11,31 @@ import com.ryabokon.pie.api.services.*;
 @Path("/")
 public class LedStripResource {
 
-	private final LedStripService ledService = new LedStripService();
+	private final LedStripService ledService = new LedStripService(25);
 	private final HardwareService hardwareService = new HardwareService();
 
 	@GET
 	@Path("/leds")
 	public Response getLedsList() {
-		String output = ledService.getStripAsString();
+		String output = ledService.getLedsAsString();
 		return Response.status(200).entity(output).build();
 	}
 
 	@PUT
 	@Path("/leds/{hex}")
-	public Response paintAllLeds(@PathParam("hex") String hex) {
-		hex = "#" + hex;
-		Color color = Color.decode(hex);
-		ledService.fillPixels(color);
+	public Response fillLeds(@PathParam("hex") String hex) {
 
-		hardwareService.sendData(ledService.getStripAsByteArray(true));
+		ledService.fillLeds(hex);
+		hardwareService.sendData(ledService.getLedsAsByteArray());
 
-		String output = ledService.getStripAsString();
+		String output = ledService.getLedsAsString();
 		return Response.status(200).entity(output).build();
 	}
 
 	@GET
 	@Path("/leds/{id}")
 	public Response getLedDetails(@PathParam("id") Integer id) {
-		String output = "Led " + id + " : " + ledService.getPixel(id);
+		String output = "Led " + id + " : " + ledService.getLedColor(id);
 		return Response.status(200).entity(output).build();
 
 	}
@@ -47,12 +43,11 @@ public class LedStripResource {
 	@PUT
 	@Path("/leds/{id}/{hex}")
 	public Response setLedColor(@PathParam("id") Integer id, @PathParam("hex") String hex) {
-		hex = "#" + hex;
-		Color color = Color.decode(hex);
-		ledService.setPixel(id, color);
-		hardwareService.sendData(ledService.getStripAsByteArray(true));
 
-		String output = ledService.getStripAsString();
+		ledService.setLedColor(id, hex);
+		hardwareService.sendData(ledService.getLedsAsByteArray());
+
+		String output = ledService.getLedsAsString();
 		return Response.status(200).entity(output).build();
 	}
 }
