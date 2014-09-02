@@ -7,13 +7,13 @@ import com.fasterxml.jackson.databind.*;
 import com.ryabokon.pie.model.*;
 import com.ryabokon.pie.tools.*;
 
-public class LedStripService {
+public class LedService {
 
 	private final ObjectMapper mapper = new ObjectMapper();
-	private final LedStrip leds;
+	private final Leds leds;
 
-	public LedStripService(int stripSize) {
-		leds = new LedStrip(stripSize);
+	public LedService(int stripSize) {
+		leds = new Leds(stripSize);
 		fillLeds("000000");
 	}
 
@@ -37,7 +37,7 @@ public class LedStripService {
 		return leds.getSize();
 	}
 
-	public LedStrip getLeds() {
+	public Leds getLeds() {
 		return leds;
 	}
 

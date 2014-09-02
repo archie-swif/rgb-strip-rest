@@ -4,7 +4,7 @@ import org.junit.*;
 
 import com.ryabokon.pie.api.services.*;
 
-public class LedStripServiceTest {
+public class LedServiceTest {
 
 	private final String BLACK = "000000";
 	private final String RED = "FF0000";
@@ -15,7 +15,7 @@ public class LedStripServiceTest {
 
 	@Test
 	public void stripIsBlackByDefaultTest() {
-		LedStripService ledService = new LedStripService(25);
+		LedService ledService = new LedService(25);
 
 		for (int i = 0; i < ledService.getLedsSize(); i++) {
 			String color = ledService.getLedColor(i);
@@ -26,7 +26,7 @@ public class LedStripServiceTest {
 
 	@Test
 	public void bigSizedStripIsBlackByDefaultTest() {
-		LedStripService ledService = new LedStripService(100);
+		LedService ledService = new LedService(100);
 
 		for (int i = 0; i < ledService.getLedsSize(); i++) {
 			String color = ledService.getLedColor(i);
@@ -38,7 +38,7 @@ public class LedStripServiceTest {
 	@Test
 	public void setPixelColorTest() {
 
-		LedStripService ledService = new LedStripService(20);
+		LedService ledService = new LedService(20);
 		ledService.setLedColor(5, RED);
 
 		for (int i = 0; i < ledService.getLedsSize(); i++) {
@@ -56,7 +56,7 @@ public class LedStripServiceTest {
 
 	@Test
 	public void fillPixelsTest() {
-		LedStripService ledService = new LedStripService(42);
+		LedService ledService = new LedService(42);
 		String fillColor = "BEBEBE";
 		ledService.fillLeds(fillColor);
 
@@ -69,7 +69,7 @@ public class LedStripServiceTest {
 
 	@Test
 	public void pixelsToArrayTest() {
-		LedStripService ledService = new LedStripService(5);
+		LedService ledService = new LedService(5);
 		ledService.setLedColor(0, "000000");
 		ledService.setLedColor(1, "FF0000");
 		ledService.setLedColor(2, "00FF00");
@@ -84,7 +84,7 @@ public class LedStripServiceTest {
 
 	@Test
 	public void pixelsToArrayWithGammaCorrectionTest() {
-		LedStripService ledService = new LedStripService(1);
+		LedService ledService = new LedService(1);
 		ledService.setLedColor(0, "204080");
 
 		byte[] expectedBytes = { 1, 5, 37 };
@@ -95,7 +95,7 @@ public class LedStripServiceTest {
 
 	@Test
 	public void pixelsToStringTest() {
-		LedStripService ledService = new LedStripService(5);
+		LedService ledService = new LedService(5);
 		ledService.setLedColor(0, "000000");
 		ledService.setLedColor(1, "FF0000");
 		ledService.setLedColor(2, "00FF00");

@@ -9,13 +9,14 @@ import com.ryabokon.pie.api.services.*;
 
 @Component
 @Path("/")
-public class LedStripResource {
+public class LedsResource {
 
-	private final LedStripService ledService = new LedStripService(25);
+	private final LedService ledService = new LedService(25);
 	private final HardwareService hardwareService = new HardwareService();
 
 	@GET
 	@Path("/leds")
+	@Produces({ "application/json" })
 	public Response getLedsList() {
 		String output = ledService.getLedsAsString();
 		return Response.status(200).entity(output).build();
@@ -28,8 +29,7 @@ public class LedStripResource {
 		ledService.fillLeds(hex);
 		hardwareService.sendData(ledService.getLedsAsByteArray());
 
-		String output = ledService.getLedsAsString();
-		return Response.status(200).entity(output).build();
+		return Response.status(200).build();
 	}
 
 	@GET
