@@ -19,9 +19,14 @@ public class HardwareService {
 	}
 
 	public HardwareService(String customPath) {
-		this();
 		this.path = customPath;
 		createEmptyFile(path);
+
+		try {
+			miso = new FileOutputStream(path);
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not open a fake file for write");
+		}
 
 	}
 
